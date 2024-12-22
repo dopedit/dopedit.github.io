@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarelix Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+        }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: #111;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 165, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .center-circle h1 {
+            color: #fff;
+            font-size: 1.5em;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(255, 165, 0, 0.1);
+            border-radius: 50%;
+            animation: rotate 60s linear infinite;
+        }
+
+        .app-item {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+
+        .app-item:hover {
+            transform: scale(1.2);
+            background: #222;
+            border-color: orange;
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.4);
+        }
+
+        .app-name {
+            position: absolute;
+            color: #ffd700;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.3s;
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 30px rgba(255, 165, 0, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(255, 165, 0, 0.4); }
+            100% { box-shadow: 0 0 30px rgba(255, 165, 0, 0.2); }
+        }
+
+        .feature-icon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255, 165, 0, 0.2);
+        }
+
+        /* Media Queries para responsividad */
+        @media (max-width: 768px) {
+            .container {
+                width: 400px;
+                height: 400px;
+            }
+
+            .center-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .orbit {
+                width: 350px;
+                height: 350px;
+            }
+
+            .app-item {
+                width: 60px;
+                height: 60px;
+            }
+
+            .app-name {
+                font-size: 1em;
+            }
+
+            .center-circle h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .center-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .orbit {
+                width: 250px;
+                height: 250px;
+            }
+
+            .app-item {
+                width: 50px;
+                height: 50px;
+            }
+
+            .app-name {
+                font-size: 0.8em;
+            }
+
+            .center-circle h1 {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="center-circle">
+            <h1>CLARELIX</h1>
+        </div>
+        
+        <div class="orbit">
+            <!-- Apps principales -->
+            <a href="app1.html" class="app-item" style="top: 0; left: 50%; transform: translate(-50%, -50%);">
+                <span class="app-name">VidUrlExt</span>
+            </a>
+            <a href="app2.html" class="app-item" style="top: 50%; right: 0; transform: translate(50%, -50%);">
+                <span class="app-name">App 2</span>
+            </a>
+            <a href="app3.html" class="app-item" style="bottom: 0; left: 50%; transform: translate(-50%, 50%);">
+                <span class="app-name">App 3</span>
+            </a>
+            <a href="app4.html" class="app-item" style="top: 50%; left: 0; transform: translate(-50%, -50%);">
+                <span class="app-name">App 4</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Añadir efecto de rotación suave al hover
+        document.querySelectorAll('.app-item').forEach(item => {
+            item.addEventListener('mouseover', function() {
+                document.querySelector('.orbit').style.animationPlayState = 'paused';
+            });
+            
+            item.addEventListener('mouseout', function() {
+                document.querySelector('.orbit').style.animationPlayState = 'running';
+            });
+        });
+    </script>
+</body>
+</html>
