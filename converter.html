@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de HTML</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            padding: 1rem;
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        textarea {
+            width: 90%;
+            max-width: 800px;
+            height: 200px;
+            margin-bottom: 1rem;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45A049;
+        }
+
+        .console {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 1rem;
+            padding: 10px;
+            background: #111;
+            color: white;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .error {
+            color: #FF5722;
+        }
+
+        .warning {
+            color: #FFC107;
+        }
+
+        .success {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Analizador de HTML</h1>
+    </header>
+    <main>
+        <textarea id="htmlInput" placeholder="Pega tu código HTML aquí"></textarea>
+        <button onclick="analyzeHTML()">Analizar</button>
+        <div class="console" id="consoleOutput"></div>
+    </main>
+
+    <script>
+        function analyzeHTML() {
+            const htmlInput = document.getElementById('htmlInput').value;
+            const consoleOutput = document.getElementById('consoleOutput');
+
+            // Limpia la consola
+            consoleOutput.innerHTML = '';
+
+            try {
+                // Parsear el HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlInput, 'text/html');
+
+                // Verificar errores de parsing
+                const errors = doc.querySelectorAll('parsererror');
+                if (errors.length > 0) {
+                    errors.forEach(error => {
+                        logError(`Error de análisis: ${error.textContent}`);
+                    });
+                    return;
+                }
+
+                // Analizar elementos
+                const issues = [];
+                doc.querySelectorAll('*').forEach(el => {
+                    // Buscar atributos no cerrados
+                    Array.from(el.attributes).forEach(attr => {
+                        if (attr.name.includes('=')) {
+                            const parts = attr.name.split('=');
+                            if (parts.length > 1 && !parts[1].startsWith('"')) {
+                                issues.push(`Atributo mal formateado: ${attr.name} en <${el.tagName.toLowerCase()}>`);
+                            }
+                        }
+                    });
+
+                    // Analizar etiquetas vacías
+                    if (el.tagName === 'IMG' && !el.getAttribute('alt')) {
+                        issues.push(`Etiqueta <img> sin atributo "alt" en ${el.outerHTML}`);
+                    }
+                });
+
+                // Mostrar resultados
+                if (issues.length > 0) {
+                    issues.forEach(issue => logWarning(issue));
+                } else {
+                    logSuccess('No se encontraron problemas en el HTML.');
+                }
+            } catch (error) {
+                logError(`Error: ${error.message}`);
+            }
+        }
+
+        function logError(message) {
+            const consoleOutput = document.getElementById('consoleOutput');
+            const div = document.createElement('div');
+            div.className = 'error';
+            div.textContent = `❌ ${message}`;
+            consoleOutput.appendChild(div);
+        }
+
+        function logWarning(message) {
+            const consoleOutput = document.getElementById('consoleOutput');
+            const div = document.createElement('div');
+            div.className = 'warning';
+            div.textContent = `⚠️ ${message}`;
+            consoleOutput.appendChild(div);
+        }
+
+        function logSuccess(message) {
+            const consoleOutput = document.getElementById('consoleOutput');
+            const div = document.createElement('div');
+            div.className = 'success';
+            div.textContent = `✅ ${message}`;
+            consoleOutput.appendChild(div);
+        }
+    </script>
+</body>
+</html>
