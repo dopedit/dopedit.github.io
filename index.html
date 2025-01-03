@@ -16,12 +16,12 @@
 
     <script>
         const apps = [
-            { id: 'videoScraper', name: 'Video Scraper Pro', icon: '🎥' path: 'vidurlext.html' },
-            { id: 'mp3Downloader', name: 'Descargador MP3', icon: '🎵' path: 'mp3-downloader.html' },
+            { id: 'videoScraper', name: 'Video Scraper Pro', icon: '🎥', path: 'vidurlext.html' },
+            { id: 'mp3Downloader', name: 'Descargador MP3', icon: '🎵', path: 'mp3-downloader.html' },
             { id: 'convertidor', name: 'Convertidor', icon: '🔄', path: 'converter.html' },
-            { id: 'videoEditor', name: 'Editor de Video', icon: '✂️' path: 'video-editor.html' },
-            { id: 'mediaManager', name: 'Gestor de Medios', icon: '📁' path: 'media-manager.html' },
-            { id: 'optimizer', name: 'Optimizador', icon:, '⚡', path: 'optimizer.html' }
+            { id: 'videoEditor', name: 'Editor de Video', icon: '✂️', path: 'video-editor.html' },
+            { id: 'mediaManager', name: 'Gestor de Medios', icon: '📁', path: 'media-manager.html' },
+            { id: 'optimizer', name: 'Optimizador', icon: '⚡', path: 'optimizer.html' }
         ];
 
         const grid = document.getElementById('appGrid');
@@ -37,10 +37,7 @@
 
             card.addEventListener('click', () => {
                 if (app.path) {
-                    // Abre la aplicación en una nueva pestaña
                     window.open(app.path, '_blank');
-                } else if (app.modal) {
-                    openModal(app.modal);
                 } else {
                     console.error(`No se pudo abrir la aplicación: ${app.name}`);
                 }
@@ -48,18 +45,6 @@
 
             grid.appendChild(card);
         });
-
-        // Función para abrir un modal
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) modal.style.display = 'flex';
-        }
-
-        // Función para cerrar un modal
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) modal.style.display = 'none';
-        }
     </script>
 </body>
 </html>
